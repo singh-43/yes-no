@@ -39,10 +39,10 @@ body { min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-s
 }
 h1 { margin: 0 0 12px; font-size: clamp(30px, 8vw, 42px); line-height: 1.1; letter-spacing: -.04em; }
 #message { margin-top: -2px; margin-bottom: 26px; font-size: 16px; opacity: .68; }
-.love-gif { display: none; width: min(270px, 72vw); margin: 4px auto 18px; border-radius: 22px; overflow: hidden; }
+.love-gif { display: none; width: min(220px, 62vw); margin: 4px auto 14px; border-radius: 22px; overflow: hidden; }
 .love-gif img { display: block; width: 150px; height: 150px; margin: 0 auto; object-fit: contain; }
 .love-gif img:not(.uploaded-love) { display: none; }
-.love-gif img.uploaded-love { width: min(270px, 72vw); height: auto; }
+.love-gif img.uploaded-love { width: min(210px, 60vw); height: auto; }
 .card:has(.love-gif[style*="display: block"]) #message { margin-top: 0; margin-bottom: 0; font-size: 17px; font-weight: 600; }
 .button-area {
   position: relative;
@@ -81,6 +81,16 @@ button:active { transform: scale(.96); }
   background: light-dark(#ffffff, #29232f);
   color: light-dark(#6c5868, #f2eaf3);
   border: 1px solid light-dark(#eadde5, #443748);
+}
+@media (max-width: 480px) {
+  #app { padding: 14px; overflow-x: hidden; }
+  .card { width: 100%; padding: 28px 16px 24px; border-radius: 24px; }
+  h1 { font-size: clamp(27px, 7.5vw, 34px); }
+  #message { margin-bottom: 20px; font-size: 14px; }
+  .love-gif { width: min(190px, 58vw); margin: 2px auto 12px; }
+  .love-gif img.uploaded-love { width: min(180px, 58vw); }
+  .button-area { height: 170px; margin-top: 2px; }
+  button { min-width: 96px; padding: 12px 22px; font-size: 15px; border-radius: 14px; }
 }
 </style>
 </head>
