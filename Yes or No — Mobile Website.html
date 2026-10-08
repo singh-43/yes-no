@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yes or No?</title>
+<style>
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { min-height: 100vh; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+#app {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: light-dark(#f7f8fc, #101218);
+  color: light-dark(#171923, #f4f5f7);
+  overflow: hidden;
+}
+.card {
+  width: min(92vw, 420px);
+  text-align: center;
+  padding: 32px 22px;
+}
+h1 { margin: 0 0 28px; font-size: clamp(28px, 8vw, 40px); line-height: 1.15; }
+.button-area {
+  position: relative;
+  width: 100%;
+  height: 150px;
+}
+button {
+  position: absolute;
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 28px;
+  min-width: 92px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: left .38s cubic-bezier(.22,.8,.25,1), top .38s cubic-bezier(.22,.8,.25,1), transform .12s ease;
+}
+button:active { transform: scale(.96); }
+#yes {
+  left: calc(50% - 106px);
+  top: 50px;
+  background: #22c55e;
+  color: white;
+}
+#no {
+  left: calc(50% + 14px);
+  top: 50px;
+  background: #ef4444;
+  color: white;
+}
+#message { margin-top: 20px; font-size: 18px; opacity: .8; }
+</style>
+</head>
+<body>
+<main id="app">
+  <section class="card" aria-live="polite">
+    <h1 id="question">Do you like me? ❤️</h1>
+    <div class="button-area" id="buttonArea">
+      <button id="yes" type="button">Yes</button>
+      <button id="no" type="button">No</button>
+    </div>
+    <div id="message"></div>
+  </section>
+</main>
+<script>
+const area = document.getElementById('buttonArea');
+const yes = document.getElementById('yes');
+const no = document.getElementById('no');
+const question = document.getElementById('question');
+const message = document.getElementById('message');
+
+function moveNo() {
+  const pad = 4;
+  const maxX = Math.max(pad, area.clientWidth - no.offsetWidth - pad);
+  const maxY = Math.max(pad, area.clientHeight - no.offsetHeight - pad);
+  const yesX = yes.offsetLeft;
+  const yesY = yes.offsetTop;
+  const yesRight = yesX + yes.offsetWidth;
+  const yesBottom = yesY + yes.offsetHeight;
+  const currentX = no.offsetLeft;
+  const currentY = no.offsetTop;
+  const minDistance = Math.min(120, Math.max(70, Math.min(maxX, maxY) * 0.55));
+
+  let x = pad;
+  let y = pad;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    x = pad + Math.random() * Math.max(0, maxX - pad);
+    y = pad + Math.random() * Math.max(0, maxY - pad);
+    const overlapsYes = x < yesRight && x + no.offsetWidth > yesX &&
+      y < yesBottom && y + no.offsetHeight > yesY;
+    const distance = Math.hypot(x - currentX, y - currentY);
+    if (!overlapsYes && distance >= minDistance) break;
+  }
+  no.style.left = `${x}px`;
+  no.style.top = `${y}px`;
+}
+
+no.addEventListener('mouseenter', moveNo);
+no.addEventListener('pointerdown', (event) => {
+  event.preventDefault();
+  moveNo();
+});
+no.addEventListener('pointerup', (event) => {
+  event.preventDefault();
+  moveNo();
+});
+no.addEventListener('click', (event) => {
+  event.preventDefault();
+  moveNo();
+});
+
+yes.addEventListener('click', () => {
+  question.textContent = 'Yay! I knew you would say YES! 🥰❤️';
+  message.textContent = 'You made the right choice! 😄';
+  yes.style.display = 'none';
+  no.style.display = 'none';
+});
+
+window.addEventListener('resize', () => {
+  if (no.style.display !== 'none') moveNo();
+});
+</script>
+</body>
+</html>
