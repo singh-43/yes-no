@@ -65,13 +65,13 @@ button {
 button:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,.16); }
 button:active { transform: scale(.96); }
 #yes {
-  left: calc(50% - 112px);
+  left: 0;
   top: 72px;
   background: linear-gradient(135deg, #ff4f91, #ff6b6b);
   color: white;
 }
 #no {
-  left: calc(50% + 7px);
+  left: 0;
   top: 72px;
   background: light-dark(#ffffff, #29232f);
   color: light-dark(#6c5868, #f2eaf3);
@@ -100,6 +100,18 @@ const no = document.getElementById('no');
 const question = document.getElementById('question');
 const message = document.getElementById('message');
 let noActivated = false;
+
+function setInitialPositions() {
+  const gap = 14;
+  const totalWidth = yes.offsetWidth + no.offsetWidth + gap;
+  const startX = Math.max(0, (area.clientWidth - totalWidth) / 2);
+  yes.style.left = `${startX}px`;
+  no.style.left = `${startX + yes.offsetWidth + gap}px`;
+  yes.style.top = '72px';
+  no.style.top = '72px';
+}
+
+requestAnimationFrame(setInitialPositions);
 
 function moveNo() {
   const pad = 4;
@@ -154,7 +166,10 @@ yes.addEventListener('click', () => {
 });
 
 window.addEventListener('resize', () => {
-  if (no.style.display !== 'none') moveNo();
+  if (no.style.display !== 'none') {
+    if (noActivated) moveNo();
+    else setInitialPositions();
+  }
 });
 </script>
 </body>
