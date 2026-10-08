@@ -99,6 +99,7 @@ const yes = document.getElementById('yes');
 const no = document.getElementById('no');
 const question = document.getElementById('question');
 const message = document.getElementById('message');
+let noActivated = false;
 
 function moveNo() {
   const pad = 4;
@@ -126,17 +127,22 @@ function moveNo() {
   no.style.top = `${y}px`;
 }
 
-no.addEventListener('mouseenter', moveNo);
+no.addEventListener('mouseenter', () => {
+  if (noActivated) moveNo();
+});
 no.addEventListener('pointerdown', (event) => {
   event.preventDefault();
+  noActivated = true;
   moveNo();
 });
 no.addEventListener('pointerup', (event) => {
   event.preventDefault();
+  noActivated = true;
   moveNo();
 });
 no.addEventListener('click', (event) => {
   event.preventDefault();
+  noActivated = true;
   moveNo();
 });
 
