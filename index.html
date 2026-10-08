@@ -20,7 +20,7 @@ body { min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-s
   background-color: light-dark(#fff7fb, #120e16);
   background-image: radial-gradient(circle at 15% 15%, light-dark(#ffd6e8, #3b1d31) 0, transparent 34%), radial-gradient(circle at 85% 85%, light-dark(#dcd7ff, #211d40) 0, transparent 34%);
   color: light-dark(#171923, #f4f5f7);
-  overflow: hidden;
+  overflow: auto;
 }
 .heart { position: absolute; font-size: 28px; opacity: .45; animation: float 5s ease-in-out infinite; pointer-events: none; }
 .heart.one { top: 13%; left: 12%; }
@@ -28,9 +28,9 @@ body { min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-s
 .heart.three { bottom: 13%; left: 18%; animation-delay: -3.5s; }
 @keyframes float { 50% { transform: translateY(-12px) rotate(7deg); } }
 .card {
-  width: min(92vw, 420px);
+  width: min(94vw, 460px);
   text-align: center;
-  padding: 42px 24px 34px;
+  padding: 36px 24px 32px;
   border: 1px solid light-dark(rgba(255,255,255,.8), rgba(255,255,255,.1));
   border-radius: 30px;
   background: light-dark(rgba(255,255,255,.7), rgba(28,21,34,.76));
@@ -38,7 +38,12 @@ body { min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-s
   backdrop-filter: blur(18px);
 }
 h1 { margin: 0 0 12px; font-size: clamp(30px, 8vw, 42px); line-height: 1.1; letter-spacing: -.04em; }
-#message { margin-top: -2px; margin-bottom: 26px; font-size: 15px; opacity: .62; }
+#message { margin-top: -2px; margin-bottom: 26px; font-size: 16px; opacity: .68; }
+.love-gif { display: none; width: min(270px, 72vw); margin: 4px auto 18px; border-radius: 22px; overflow: hidden; }
+.love-gif img { display: block; width: 150px; height: 150px; margin: 0 auto; object-fit: contain; }
+.love-gif img:not(.uploaded-love) { display: none; }
+.love-gif img.uploaded-love { width: min(270px, 72vw); height: auto; }
+.card:has(.love-gif[style*="display: block"]) #message { margin-top: 0; margin-bottom: 0; font-size: 17px; font-weight: 600; }
 .button-area {
   position: relative;
   width: 100%;
@@ -86,6 +91,9 @@ button:active { transform: scale(.96); }
   <div class="heart three">♡</div>
   <section class="card" aria-live="polite">
     <h1 id="question">Do you like me? ❤️</h1>
+    <div class="love-gif">
+      <img class="uploaded-love" src="love_img.jpg" alt="Love you">
+    </div>
     <div id="message">Be honest... there is only one right answer 😌</div>
     <div class="button-area" id="buttonArea">
       <button id="yes" type="button">Yes</button>
@@ -161,9 +169,13 @@ no.addEventListener('click', (event) => {
 yes.addEventListener('click', () => {
   question.textContent = 'Yay! I knew you would say YES! 🥰❤️';
   message.textContent = 'You made the right choice! 😄';
+  loveGif.style.display = 'block';
   yes.style.display = 'none';
   no.style.display = 'none';
+  area.style.display = 'none';
 });
+
+const loveGif = document.querySelector('.love-gif');
 
 window.addEventListener('resize', () => {
   if (no.style.display !== 'none') {
